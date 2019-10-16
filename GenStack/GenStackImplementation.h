@@ -30,7 +30,7 @@ GenStack<T>::~GenStack()
 
 // Removes and returns the top element
 template <typename T>
-T GenStack<T>::pop()
+T GenStack<T>::pop() throw(GenStackEmptyException)
 {
   if (empty())
     throw GenStackEmptyException();
@@ -68,7 +68,7 @@ int GenStack<T>::size()
 template <typename T>
 bool GenStack<T>::empty()
 {
-  return (t = -1);
+  return (t == -1);
 }
 
 // Doubles the size of the stack, in case the stack is full and needs more room

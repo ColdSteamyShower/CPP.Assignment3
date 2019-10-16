@@ -21,7 +21,7 @@ public:
     GenStack(int startSize);  // Overloaded Constructor
     ~GenStack();                // Destructor
 
-    T pop();                  // Removes and returns the top element
+    T pop() throw(GenStackEmptyException);                  // Removes and returns the top element
 
     T top();                  // Returns the top element
 

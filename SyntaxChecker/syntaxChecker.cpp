@@ -13,26 +13,25 @@ syntaxChecker::syntaxChecker()
   stackPtr = NULL;
   line = 0;
   charCache = ' ';
-  cout << "syntaxChecker created" << endl;
 }
 
-void syntaxChecker::checkFile(string fileName)
+bool syntaxChecker::checkFile(string fileName)
 {
   cout << "Checking File..." << endl;
   stackPtr = new GenStack<char>;
   ifstream inFile(fileName);
   line = 1;
   char c;
-  bool stopped = false;
+  bool foundError = false;
   while (inFile.get(c)) // check for every character
   {
     if (stringCommentHandler(c))
       continue;
     if (errorCheck(c)){
-      stopped = true;
+      foundError = true;
       break;
     }
-    charCache = c; // charCache = previous character
+    charCache = c; // charCache = previous character, used for finding '//'
     if (c == '\n')
     {
       inComment = false;
@@ -40,7 +39,7 @@ void syntaxChecker::checkFile(string fileName)
     }
   }
 
-  while (!stopped && !stackPtr->empty()) // if there are delimiters that have not been closed, notify user
+  while (!foundError && !(stackPtr->empty())) // if there are delimiters that have not been closed, notify user
   {
     cout << "Reached end of file: Missing " << oppositeDelimiter(stackPtr->pop()) << endl;
   }
@@ -50,7 +49,7 @@ void syntaxChecker::checkFile(string fileName)
   stackPtr = NULL;
   inFile.close();
 
-  cout << "Done!" << endl;
+  return (!foundError);
 }
 
 bool syntaxChecker::stringCommentHandler(char c)
@@ -63,14 +62,17 @@ bool syntaxChecker::stringCommentHandler(char c)
   }
   else if (c == '"') // if it comes across "
   {
-    cout << "a string character was found!" << endl;
     inString = (!inString);
     return true;
+  }
+  else if (c == '\n') // if it is the end of the line, continue
+  {
+    return false;
   }
   else if (inString || inComment) // if it is a normal char, but the program is in a string or comment, continue without checking
   {
     return true;
-  } else
+  } else // pass and go to check the char for an error
   {
     return false;
   }
@@ -81,19 +83,16 @@ bool syntaxChecker::errorCheck(char c)
 
   if ( c == '[' || c == '{' || c == '(' ) // is an opening delimiter
   {
-    cout << "Found " << c << ". Pushing..." << endl;
     stackPtr->push(c);
     return false;
   }
   else if ( c == ']' || c == '}' || c == ')' ) // is a closing delimiter
   {
-    cout << "Found " << c << "..." << endl;
     try
     {
       char popped = stackPtr->pop();
       if (popped == oppositeDelimiter(c)) // if the delimiter is closed correctly
       {
-        cout << "Delimiters Closed Correctly" << endl;
         return false;
       }
       else // if the delimiter is not closed correctly

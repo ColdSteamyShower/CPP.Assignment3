@@ -5,8 +5,8 @@ using namespace std;
 
 class syntaxChecker{
 private:
-  GenStack<char> *stackPtr;
-  int line;
+  GenStack<char> *stackPtr; // the stack
+  int line; // keeps track of current line in the file
   bool inString; // decides whether the source file is in the middle of a string or not
   bool inComment; // decides whether the source file is in the middle of a commented line or not
   char charCache; // used to remember what the previous char was
@@ -14,13 +14,15 @@ private:
 public:
   syntaxChecker(); // Constructor
 
-  // precondition: string is a readable file that exists
-  void checkFile(string fileName);
-  // postcondition: iterates through the file to check for syntax errors
+  // destructor is not needed, because stackPtr is not declared/destroyed in the creation/deletion of the class object
+
+  // precondition: string is a readable source file that exists
+  bool checkFile(string fileName);
+  // postcondition: iterates through the file to check for syntax errors. returns true if there are none
 
   // precondition: c is a valid char
   bool errorCheck(char c);
-  // postcondition: Checks to see if the character breaks syntax. Returns true if it doesn't. Returns false if it does.
+  // postcondition: Checks to see if the character breaks syntax. Returns true if it doesn't break. Returns false if it does.
 
   // precondition: checkFile() is running
   bool stringCommentHandler(char c);
