@@ -2,7 +2,7 @@ Ayden Best
 
 Data Structures & Algorithms at Chapman University
 
-#Syntax Checker - a Stack Implementation
+# Syntax Checker - a Stack Implementation
 
 ## GenStack
 GenStack is a Stack data structure build from scratch
