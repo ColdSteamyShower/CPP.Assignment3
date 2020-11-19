@@ -1,8 +1,11 @@
 Ayden Best
-002317839
 
----===[GenStack Sources]===---
+Data Structures & Algorithms at Chapman University
 
-[Data Structures and Algorithms in C++, Goodrich, Class Text] Used as reminder of a stack's function names and operations
+#Syntax Checker - a Stack Implementation
 
-[Data Structures and Algorithms in C++, Goodrich, Class Text] Used to re-learn the concept of template classes
+## GenStack
+GenStack is a Stack data structure build from scratch
+
+## Syntax Checker
+The main implementation is a program that uses the stack to scan a file and ensure parsing is correct. It will check in the set { '{', '[', '('} for parsing errors
